@@ -28,9 +28,28 @@ int main()
 	int pipefds1[2], pipefds2[2];
 	int returnstatus1, returnstatus2;
 	int pid;
-	char str[50], final[50];
+	char message1[50], message2[50];
 	gets(str);
-	final=conversion(str);
 
-	
+	char read_message[50];
+
+	pid = fork();
+	if (pid!=0)
+		{
+			close(pipefds1[0]);
+			close(pipefds2[1]);
+			printf("In parent: Writing to pipe 1 - Message is %s\n", message1);
+			write(pipefds1[1], message1, sizeof(message1));
+			read(pipefds2[0], read_message, sizeof(read_message));
+			printf("In parent: Reading from pipe 2 - Message is %s\n", read_message);
+		}
+	else
+		{
+			close(pipefds1[1]);
+			close(pipefds2[0]);
+			read( pipefds1[0], read_message, sizeof(read_message));
+			printf("In child: Reading from pipe 1 - Message is %s\n", read_message);
+			printf("In child: Writing to pipe 2 - Message is %s\n", message2);
+			write(pipefds2[1], message2, sizeof(message2));
+		}
 }
