@@ -59,9 +59,10 @@ int main()
 	int buffer[50];
 	int num;
 	int min,max,avg;
-	printf("Enter amount:");
+	printf("Enter total count of numbers:");
 	scanf("%d",&num);
 	size=num;
+	printf("Enter numbers:\n");
 	for( int i=0; i<num; i++)
 	{
 		scanf("%d",&buffer[i]);

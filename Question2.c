@@ -67,7 +67,7 @@ int main()
 			close(pipe1[1]);
 			close(pipe2[0]);
 			read( pipe1[0], read_message, sizeof(read_message));
-			printf("Message received from pipe 1 in second process (pid = %d and ppid=%d): %s\n", getpid(), getppid(), read_message);
+			printf("Message received from pipe 1 in second process (pid = %d and ppid = %d): %s\n", getpid(), getppid(), read_message);
 			printf("Message sent through pipe 2 in second process (pid = %d and ppid = %d): %s\n", getpid(), getppid(), message2);
 			write(pipe2[1], message2, sizeof(message2));
 		}
