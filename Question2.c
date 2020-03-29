@@ -1,37 +1,51 @@
 #include<stdio.h>
 #include<unistd.h>
 
-char conversion(char str_org[50])
-{
-	char str_final[50]={'\0'};
-	int ascii_value=0;
-	for (int i=0; i<strlen(str_org); i++)
-	{
-		ascii_value = (int)str_org[i];
-		if (ascii_value>=97 && ascii_value<=122)
-		{
-			ascii_value = ascii_value-32;
-			str_final[i] = (char)ascii_value;
-		}
-		else if (ascii_value>=65 && ascii_Value<=90)
-		{
-			ascii_value = ascii_value+32;
-			str_final[i] = (char)ascii_value;
-		}
-		else
-			str_final[i] = (char)ascii_value;
-	}
-	return str_final;
-}
 int main()
 {
 	int pipefds1[2], pipefds2[2];
 	int returnstatus1, returnstatus2;
 	int pid;
-	char message1[50], message2[50];
-	gets(str);
+	char message1[50];
+	char message2[50]={'\0'};
+	fgets(message1, 50, stdin);
 
 	char read_message[50];
+
+	int ascii=0;
+	for(int i=0; i<sizeof(message1); i++)
+	{
+		ascii=(int)message1[i];
+		if(ascii>=97 && ascii<=122)
+		{
+			ascii=ascii-32;
+			message2[i]=(char)ascii;
+		}
+		else if(ascii>=65 && ascii<=90)
+		{
+			ascii=ascii+32;
+			message2[i]=(char)ascii;
+		}
+		else
+			message2[i]=(char)ascii;
+	}
+
+
+	returnstatus1= pipe(pipefds1);
+
+	if (returnstatus1==-1)
+	{
+		printf("Unable to create pipe 1\n");
+		return 1;
+	}
+
+	returnstatus2 = pipe(pipefds2);
+
+	if (returnstatus2==-1)
+	{
+		printf("Unable to create pipe 2");
+		return 1;
+	}
 
 	pid = fork();
 	if (pid!=0)
@@ -52,4 +66,5 @@ int main()
 			printf("In child: Writing to pipe 2 - Message is %s\n", message2);
 			write(pipefds2[1], message2, sizeof(message2));
 		}
+	return 0;
 }
