@@ -18,8 +18,7 @@ void *thread1(void *arg)
 		}
 	}
 	minimum=min_num;
-	int *a=&minimum;
-	pthread_exit(a);
+	pthread_exit(NULL);
 }
 void *thread2(void *arg)
 {
@@ -33,8 +32,7 @@ void *thread2(void *arg)
 		}
 	}
 	maximum=max_num;
-	int *b=&maximum;
-	pthread_exit(b);
+	pthread_exit(NULL);
 }
 void *thread3(void *arg)
 {
@@ -45,20 +43,15 @@ void *thread3(void *arg)
 		sum=sum+arr[i];
 	}
 	average=sum/size;
-	int *c = &average;
-	pthread_exit(c);
+	pthread_exit(NULL);
 }
 int main()
 {
 	pthread_t th1;
 	pthread_t th2;
 	pthread_t th3;
-	void *ptr1_return;
-	void *ptr2_return;
-	void *ptr3_return;
 	int buffer[50];
 	int num;
-	int min,max,avg;
 	printf("Enter total count of numbers:");
 	scanf("%d",&num);
 	size=num;
@@ -72,16 +65,11 @@ int main()
 	pthread_create(&th2,NULL,thread2,(void*)&buffer);
 	pthread_create(&th3,NULL,thread3,(void*)&buffer);
 
-	pthread_join(th1,&ptr1_return);
-	min= *((int*)ptr1_return);
+	pthread_join(th1,NULL);
+	pthread_join(th2,NULL);
+	pthread_join(th3,NULL);
 
-	pthread_join(th2,&ptr2_return);
-	max= *((int*)ptr2_return);
-
-	pthread_join(th3,&ptr3_return);
-	avg= *((int*)ptr3_return);
-
-	printf("Minimum number is: %d\n", min);
-	printf("Maximum number is: %d\n", max);
-	printf("Average value is: %d\n", avg);
+	printf("Minimum number is: %d\n", minimum);
+	printf("Maximum number is: %d\n", maximum);
+	printf("Average value is: %d\n", average);
 }
